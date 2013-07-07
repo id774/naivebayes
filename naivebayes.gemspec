@@ -16,7 +16,24 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    "README.md"
+    "Gemfile",
+    "README.md",
+    "Rakefile",
+    "VERSION",
+    "doc/AUTHORS",
+    "doc/COPYING",
+    "doc/COPYING.LESSER",
+    "doc/ChangeLog",
+    "doc/LICENSE",
+    "doc/README",
+    "lib/naivebayes.rb",
+    "lib/naivebayes/classifier.rb",
+    "naivebayes.gemspec",
+    "script/build",
+    "spec/lib/naivebayes/classifier_spec.rb",
+    "spec/lib/naivebayes_spec.rb",
+    "spec/spec_helper.rb",
+    "vendor/.gitkeep"
   ]
   s.homepage = "http://github.com/id774/naivebayes"
   s.licenses = ["GPL"]
