@@ -1,0 +1,16 @@
+naivebayes
+
+Name
+ naive bayes classifier
+
+Syntax
+ require 'naivebayes'
+
+Description
+ http://en.wikipedia.org/wiki/Naive_bayes
+
+Installation
+ $ gem install naivebayes
+
+Tutorial
+ See spec files.
