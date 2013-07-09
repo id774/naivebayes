@@ -3,7 +3,7 @@
 
 module NaiveBayes
   class Classifier
-    def initialize(params)
+    def initialize(params = {})
       @frequency_table = Hash.new
       @word_table = Hash.new
       @instance_count_of = Hash.new(0)
