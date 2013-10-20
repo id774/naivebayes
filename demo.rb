@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
-require 'naivebayes'
+$:.unshift File.join(File.dirname(__FILE__))
+
+require 'lib/naivebayes'
 
 puts "--- The Bernoulli model ---"
 classifier = NaiveBayes::Classifier.new(:model => "berounoulli")
