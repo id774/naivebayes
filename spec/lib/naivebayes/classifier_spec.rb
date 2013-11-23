@@ -143,9 +143,9 @@ describe NaiveBayes::Classifier do
         classifier.train("neutral",  {"eee" => 3, "fff" => 3})
 
         expected = {
-          "positive"=>0.2272727272727273,
-          "negative"=>0.22727272727272724,
-          "neutral"=>0.5454545454545455
+          "positive" => 0.2272727272727273,
+          "negative" => 0.22727272727272724,
+          "neutral"  => 0.5454545454545455
         }
 
         expect(subject).to eq expected
