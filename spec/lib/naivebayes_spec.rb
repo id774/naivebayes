@@ -6,6 +6,6 @@ describe NaiveBayes do
   context "VERSION" do
     subject { NaiveBayes::VERSION }
 
-    it { expect(subject).to eql "0.0.2" }
+    it { expect(subject).to eq "0.0.2" }
   end
 end
