@@ -181,7 +181,9 @@ describe NaiveBayes::Classifier do
       end
     end
   end
+end
 
+describe NaiveBayes::Classifier do
   describe 'The berounoulli model' do
     context 'with train data of two expecting positive' do
 
