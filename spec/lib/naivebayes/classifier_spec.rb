@@ -4,6 +4,184 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe NaiveBayes::Classifier do
+  describe '#initialize' do
+    context '@frequency_table with berounoulli model' do
+      subject { classifier.frequency_table }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "berounoulli") }
+
+      it 'should return frequency table' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = {
+          "positive" => {"aaa" => 2, "bbb" => 2},
+          "negative" => {"ccc" => 2, "ddd" => 2}
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@frequency_table with multinomial model' do
+      subject { classifier.frequency_table }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "multinomial") }
+
+      it 'should return frequency table' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = {
+          "positive" => {"aaa" => 1, "bbb" => 3},
+          "negative" => {"ccc" => 5, "ddd" => 7}
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@word_table with berounoulli model' do
+      subject { classifier.word_table }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "berounoulli") }
+
+      it 'should return word table' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = {
+          "aaa" => 1, "bbb" => 1,
+          "ccc" => 1, "ddd" => 1
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@word_table with multinomial model' do
+      subject { classifier.word_table }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "multinomial") }
+
+      it 'should return word table' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = {
+          "aaa" => 1, "bbb" => 1,
+          "ccc" => 1, "ddd" => 1
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@instance_count_of with berounoulli model' do
+      subject { classifier.instance_count_of }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "berounoulli") }
+
+      it 'should return instance_count_of' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = {
+          "positive" => 2,
+          "negative" => 2
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@instance_count_of with multinomial model' do
+      subject { classifier.instance_count_of }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "multinomial") }
+
+      it 'should return instance_count_of' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = {
+          "positive" => 2,
+          "negative" => 2
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@total_count with berounoulli model' do
+      subject { classifier.total_count }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "berounoulli") }
+
+      it 'should return total count' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = 4
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@total_count with multinomial model' do
+      subject { classifier.total_count }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "multinomial") }
+
+      it 'should return total count' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+        classifier.train("positive", {"aaa" => 1, "bbb" => 2})
+        classifier.train("negative", {"ccc" => 3, "ddd" => 4})
+
+        expected = 4
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@model with berounoulli model' do
+      subject { classifier.model }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "berounoulli") }
+
+      it 'should return model name' do
+        expected = "berounoulli"
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@model with multinomial model' do
+      subject { classifier.model }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "multinomial") }
+
+      it 'should return model name' do
+        expected = "multinomial"
+        expect(subject).to eq expected
+      end
+    end
+  end
+
   describe 'The berounoulli model' do
     context 'with train data of two expecting positive' do
 
