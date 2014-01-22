@@ -11,17 +11,18 @@ module NaiveBayes
       @instance_count_of = Hash.new(0)
       @total_count = 0
       @model = params[:model]
+      @smoothing_parameter = params[:smoothing_parameter] || 1
     end
 
-    def train(label, attributes)
+    def train(label, feature)
       unless @frequency_table.has_key?(label)
         @frequency_table[label] = Hash.new(0)
       end
-      attributes.each {|word, frequency|
-        if @model == "multinomial"
-          @frequency_table[label][word] += frequency
-        else
+      feature.each {|word, frequency|
+        if @model == "berounoulli"
           @frequency_table[label][word] += 1
+        else
+          @frequency_table[label][word] += frequency
         end
         @word_table[word] = 1
       }
@@ -29,7 +30,7 @@ module NaiveBayes
       @total_count += 1
     end
 
-    def classify(attributes)
+    def classify(feature)
       class_prior_of = Hash.new(1)
       likelihood_of = Hash.new(1)
       class_posterior_of = Hash.new(1)
@@ -42,7 +43,7 @@ module NaiveBayes
         @word_table.each_key {|word|
           laplace_word_likelihood = (@frequency_table[label][word] + 1).to_f /
             (@instance_count_of[label] + @word_table.size()).to_f
-          if attributes.has_key?(word)
+          if feature.has_key?(word)
             likelihood_of[label] *= laplace_word_likelihood
           else
             likelihood_of[label] *= (1 - laplace_word_likelihood)
