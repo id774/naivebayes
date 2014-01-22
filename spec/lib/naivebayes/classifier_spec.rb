@@ -400,3 +400,70 @@ describe NaiveBayes::Classifier do
     end
   end
 end
+
+describe NaiveBayes::Classifier do
+  describe 'The complement model' do
+    context 'with train data of three expecting positive' do
+
+      subject { classifier.classify({"aaa" => 4, "bbb" => 3, "ccc" => 3}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement") }
+
+      it 'should return positive' do
+        classifier.train("positive", {"aaa" => 3, "bbb" => 1, "ccc" => 2})
+        classifier.train("negative", {"aaa" => 1, "bbb" => 4, "ccc" => 2})
+        classifier.train("neutral",  {"aaa" => 2, "bbb" => 3, "ccc" => 5})
+
+        expected = {
+          "neutral"  => 9.985931139006835,
+          "negative" => 10.112101263742268,
+          "positive" => 10.836883752313222
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context 'with train data of three expecting negative' do
+
+      subject { classifier.classify({"aaa" => 3, "bbb" => 4, "ccc" => 3}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement") }
+
+      it 'should return negative' do
+        classifier.train("positive", {"aaa" => 3, "bbb" => 1, "ccc" => 2})
+        classifier.train("negative", {"aaa" => 1, "bbb" => 4, "ccc" => 2})
+        classifier.train("neutral",  {"aaa" => 2, "bbb" => 3, "ccc" => 5})
+
+        expected = {
+          "neutral"  => 9.80360958221288,
+          "positive" => 10.143736571753276,
+          "negative" => 10.294422820536223
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context 'with train data of three expecting neutral' do
+
+      subject { classifier.classify({"aaa" => 3, "bbb" => 3, "ccc" => 5}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement") }
+
+      it 'should return neutral' do
+        classifier.train("positive", {"aaa" => 3, "bbb" => 1, "ccc" => 2})
+        classifier.train("negative", {"aaa" => 1, "bbb" => 4, "ccc" => 2})
+        classifier.train("neutral",  {"aaa" => 2, "bbb" => 3, "ccc" => 5})
+
+        expected = {
+          "negative" => 10.68941662877709,
+          "positive" => 11.06002730362743,
+          "neutral"  => 11.149081948812517
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+  end
+end

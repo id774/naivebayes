@@ -31,6 +31,12 @@ module NaiveBayes
     end
 
     def classify(feature)
+      @model == "complement" ? cnb(feature) : mnb(feature)
+    end
+
+    private
+
+    def mnb(feature)
       class_prior_of = Hash.new(1)
       likelihood_of = Hash.new(1)
       class_posterior_of = Hash.new(1)
@@ -56,6 +62,38 @@ module NaiveBayes
         class_posterior_of[label] = posterior / evidence
       }
       return class_posterior_of
+    end
+
+    def cnb(feature)
+      all_class = @frequency_table.keys
+      all_train_data = @instance_count_of.values.inject(0) {|s, v| s + v}
+      class_posterior_of = all_class.map {|c|
+        n_c = total_number_of_word_in_other_class(c)
+        alpha = @smoothing_parameter*feature.length
+        term2nd = feature.to_a.map {|e|
+          k = e[0]
+          v = e[1]
+          v*Math.log((number_of_word_in_other_class(c, k) + @smoothing_parameter).to_f/(n_c + alpha))
+        }.inject(0) {|s, v| s + v}
+        theta_c = @instance_count_of[c].to_f/all_train_data
+        [c, Math.log(theta_c) - term2nd]
+      }.sort {|x, y| x[1] <=> y[1]}.flatten
+      Hash[*class_posterior_of]
+    end
+
+    def total_number_of_word_in_other_class(c)
+      all_words = @frequency_table.values.map {|h| h.keys}.flatten.sort.uniq
+      other_classes = @frequency_table.keys - [c]
+      other_classes.map {|c|
+        all_words.map {|w|
+          @frequency_table[c][w]
+        }
+      }.flatten.inject(0) {|s, v| s + v}
+    end
+
+    def number_of_word_in_other_class(c, i)
+      other_classes = @frequency_table.keys - [c]
+      other_classes.map {|c| @frequency_table[c][i]}.inject(0) {|s, v| s + v}
     end
   end
 end
