@@ -46,7 +46,7 @@ Complement Naive Bayes.
 
 ``` html
 require 'naivebayes'
-classifier = NaiveBayes::Classifier.new(:model => "complement")
+classifier = NaiveBayes::Classifier.new(:model => "complement", :smoothing_parameter => 1)
 classifier.train("positive", {"aaa" => 3, "bbb" => 1, "ccc" => 2})
 classifier.train("negative", {"aaa" => 1, "bbb" => 4, "ccc" => 2})
 classifier.train("neutral",  {"aaa" => 2, "bbb" => 3, "ccc" => 5})

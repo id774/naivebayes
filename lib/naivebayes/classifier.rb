@@ -3,7 +3,7 @@
 
 module NaiveBayes
   class Classifier
-    attr_accessor :frequency_table, :word_table, :instance_count_of, :total_count, :model
+    attr_accessor :frequency_table, :word_table, :instance_count_of, :total_count, :model, :smoothing_parameter
 
     def initialize(params = {})
       @frequency_table = Hash.new

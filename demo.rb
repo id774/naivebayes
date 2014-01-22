@@ -24,7 +24,7 @@ result = classifier.classify({"aaa" => 1, "bbb" => 1})
 
 p result # => {"positive" => 0.9411764705882353,"negative" => 0.05882352941176469}
 
-classifier = NaiveBayes::Classifier.new(:model => "complement")
+classifier = NaiveBayes::Classifier.new(:model => "complement", :smoothing_parameter => 1)
 
 classifier.train("positive", {"aaa" => 3, "bbb" => 1, "ccc" => 2})
 classifier.train("negative", {"aaa" => 1, "bbb" => 4, "ccc" => 2})
