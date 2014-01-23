@@ -180,6 +180,28 @@ describe NaiveBayes::Classifier do
         expect(subject).to eq expected
       end
     end
+
+    context '@model with complement' do
+      subject { classifier.model }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement") }
+
+      it 'should return model name' do
+        expected = "complement"
+        expect(subject).to eq expected
+      end
+    end
+
+    context '@model with complement with smoothing parameter' do
+      subject { classifier.smoothing_parameter }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement", :smoothing_parameter => 3) }
+
+      it 'should return model name' do
+        expected = 3
+        expect(subject).to eq expected
+      end
+    end
   end
 end
 
@@ -306,6 +328,64 @@ describe NaiveBayes::Classifier do
         expect(subject).to eq expected
       end
     end
+
+    context 'with train data of two expecting negative and smoothing parameter 1' do
+
+      subject { classifier.classify({"ccc" => 3, "ddd" => 3}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement", :smoothing_parameter => 1) }
+
+      it 'should return negative' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+
+        expected = {
+          "positive"=>3.527593764407934,
+          "negative"=>5.898526551448713
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context 'with train data of two expecting positive and smoothing parameter 3' do
+
+      subject { classifier.classify({"aaa" => 1, "bbb" => 1}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement", :smoothing_parameter => 3) }
+
+      it 'should return positive' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+
+        expected = {
+          "negative"=>0.7137664677626813,
+          "positive"=>1.9054187877005764
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context 'with train data of two expecting positive and smoothing parameter 5' do
+
+      subject { classifier.classify({"aaa" => 1, "bbb" => 1}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement", :smoothing_parameter => 5) }
+
+      it 'should return positive' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+
+        expected = {
+          "negative"=>0.7014459833746406,
+          "positive"=>1.5040773967762742
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
   end
 end
 
