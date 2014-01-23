@@ -192,12 +192,12 @@ describe NaiveBayes::Classifier do
       end
     end
 
-    context '@model with complement with smoothing parameter' do
+    context '@smoothing_parameter with complement' do
       subject { classifier.smoothing_parameter }
 
       let(:classifier) { NaiveBayes::Classifier.new(:model => "complement", :smoothing_parameter => 3) }
 
-      it 'should return model name' do
+      it 'should return smoothing parameter' do
         expected = 3
         expect(subject).to eq expected
       end
