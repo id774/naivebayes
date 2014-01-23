@@ -268,6 +268,48 @@ describe NaiveBayes::Classifier do
 end
 
 describe NaiveBayes::Classifier do
+  describe 'Complement Naive Bayes' do
+    context 'with train data of two expecting positive' do
+
+      subject { classifier.classify({"aaa" => 1, "bbb" => 1}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement") }
+
+      it 'should return positive' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+
+        expected = {
+          "negative"=>0.8109302162163289,
+          "positive"=>3.1986731175506815
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+
+    context 'with train data of two expecting negative' do
+
+      subject { classifier.classify({"ccc" => 3, "ddd" => 3}) }
+
+      let(:classifier) { NaiveBayes::Classifier.new(:model => "complement") }
+
+      it 'should return negative' do
+        classifier.train("positive", {"aaa" => 0, "bbb" => 1})
+        classifier.train("negative", {"ccc" => 2, "ddd" => 3})
+
+        expected = {
+          "positive"=>3.527593764407934,
+          "negative"=>5.898526551448713
+        }
+
+        expect(subject).to eq expected
+      end
+    end
+  end
+end
+
+describe NaiveBayes::Classifier do
   describe 'The berounoulli model' do
     context 'with train data of three expecting positive' do
 
@@ -402,7 +444,7 @@ describe NaiveBayes::Classifier do
 end
 
 describe NaiveBayes::Classifier do
-  describe 'The complement model' do
+  describe 'Complement Naive Bayes' do
     context 'with train data of three expecting positive' do
 
       subject { classifier.classify({"aaa" => 4, "bbb" => 3, "ccc" => 3}) }
